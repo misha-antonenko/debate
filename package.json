@@ -1,0 +1,27 @@
+{
+  "name": "beep-timer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
+    "format": "prettier --write --ignore-unknown ."
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@tailwindcss/vite": "^4.3.0",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.8.4",
+    "prettier-plugin-svelte": "^4.1.0",
+    "svelte": "^5.55.5",
+    "svelte-check": "^4.6.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.12",
+    "vitest": "^4.1.8"
+  }
+}

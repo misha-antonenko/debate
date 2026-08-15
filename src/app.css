@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: sans-serif;
+  --font-mono: monospace;
+}
+
+html {
+  background-color: #0c0a09;
+  color: #e7e5e4;
+}
+
+body {
+  margin: 0;
+}

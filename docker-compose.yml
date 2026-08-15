@@ -1,0 +1,12 @@
+services:
+  debate:
+    build: .
+    restart: unless-stopped
+    expose:
+      - "80"
+    networks:
+      - caddy-net
+
+networks:
+  caddy-net:
+    external: true
