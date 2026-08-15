@@ -5,6 +5,13 @@ const RELEASE_S = 0.15
 const TREMOLO_HZ = 5
 const TREMOLO_DEPTH = 0.12
 
+const CHIME_HZ = [659.25, 783.99, 987.77, 1318.51] as const
+const CHIME_LEAD_S = 0.03
+const CHIME_STEP_S = 0.16
+const CHIME_DECAY_S = 1.1
+const CHIME_GAIN = 0.3
+const SILENCE_GAIN = 0.0001
+
 export class Beeper {
   #context: AudioContext | null = null
   #voices: OscillatorNode[] = []
@@ -39,6 +46,30 @@ export class Beeper {
 
     this.#master = master
     this.#voices = [...voices, tremolo]
+  }
+
+  chime(): void {
+    const context = (this.#context ??= new AudioContext())
+    void context.resume()
+    const start = context.currentTime + CHIME_LEAD_S
+
+    CHIME_HZ.forEach((frequencyHz, index) => {
+      const at = start + index * CHIME_STEP_S
+      const end = at + CHIME_DECAY_S
+
+      const gain = context.createGain()
+      gain.gain.setValueAtTime(0, at)
+      gain.gain.linearRampToValueAtTime(CHIME_GAIN, at + ATTACK_S)
+      gain.gain.exponentialRampToValueAtTime(SILENCE_GAIN, end)
+      gain.connect(context.destination)
+
+      const oscillator = context.createOscillator()
+      oscillator.type = "triangle"
+      oscillator.frequency.value = frequencyHz
+      oscillator.connect(gain)
+      oscillator.start(at)
+      oscillator.stop(end)
+    })
   }
 
   stop(): void {

@@ -7,8 +7,8 @@
   const MS_PER_SECOND = 1000
   const SECONDS_PER_MINUTE = 60
 
-  const timer = createTimer()
   const beeper = new Beeper()
+  const timer = createTimer({ onComplete: () => beeper.chime() })
 
   let minutesInput = $state(
     Math.floor(timer.durationMs / MS_PER_SECOND / SECONDS_PER_MINUTE),

@@ -78,6 +78,36 @@ describe("createTimer", () => {
     expect(timer.isRunning).toBe(false)
   })
 
+  it("fires onComplete once when a tick reaches zero", () => {
+    let completions = 0
+    const timer = createTimer({
+      now,
+      storage: new MemoryStorage(),
+      onComplete: () => (completions += 1),
+    })
+    timer.setDuration(0, 5)
+    timer.start()
+    clock = 9_000
+    timer.tick()
+    expect(completions).toBe(1)
+    timer.tick()
+    expect(completions).toBe(1)
+  })
+
+  it("does not fire onComplete when paused early", () => {
+    let completions = 0
+    const timer = createTimer({
+      now,
+      storage: new MemoryStorage(),
+      onComplete: () => (completions += 1),
+    })
+    timer.setDuration(0, 10)
+    timer.start()
+    clock = 3_000
+    timer.pause()
+    expect(completions).toBe(0)
+  })
+
   it("start is a no-op at zero remaining", () => {
     const timer = createTimer({ now, storage: new MemoryStorage() })
     timer.setDuration(0, 0)

@@ -16,6 +16,7 @@ interface Persisted {
 export interface TimerOptions {
   now?: () => number
   storage?: StorageLike
+  onComplete?: () => void
 }
 
 function loadPersisted(storage: StorageLike): Persisted {
@@ -38,6 +39,7 @@ function loadPersisted(storage: StorageLike): Persisted {
 export function createTimer(options: TimerOptions = {}) {
   const now = options.now ?? (() => Date.now())
   const storage = options.storage ?? localStorage
+  const onComplete = options.onComplete
 
   const initial = loadPersisted(storage)
   let durationMs = $state(initial.durationMs)
@@ -76,6 +78,9 @@ export function createTimer(options: TimerOptions = {}) {
     remainingMs = Math.max(0, endTimestamp - now())
     if (remainingMs <= 0) {
       isRunning = false
+      persist()
+      onComplete?.()
+      return
     }
     persist()
   }
