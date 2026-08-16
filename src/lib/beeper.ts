@@ -3,6 +3,7 @@ const BEEP_GAIN = 0.6
 
 const CHIME_HZ = [659.25, 783.99, 987.77, 1318.51] as const
 const CHIME_LEAD_S = 0.03
+const CHIME_ATTACK_S = 0.04
 const CHIME_STEP_S = 0.16
 const CHIME_DECAY_S = 1.1
 const CHIME_GAIN = 0.3
@@ -38,7 +39,7 @@ export class Beeper {
 
       const gain = context.createGain()
       gain.gain.setValueAtTime(0, at)
-      gain.gain.linearRampToValueAtTime(CHIME_GAIN, at + ATTACK_S)
+      gain.gain.linearRampToValueAtTime(CHIME_GAIN, at + CHIME_ATTACK_S)
       gain.gain.exponentialRampToValueAtTime(SILENCE_GAIN, end)
       gain.connect(context.destination)
 
